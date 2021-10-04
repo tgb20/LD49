@@ -100,15 +100,23 @@ public class Waver : MonoBehaviour
 
     private void GenerateNewWaves()
     {
-        setAmpX = Random.Range(0f, 0.65f);
-        setAmpY = Random.Range(0f, 0.65f);
-        setSpeedX = setAmpX * Random.Range(0f, 2f);
-        setSpeedY = setAmpY * Random.Range(0f, 2f);
 
-        var rad = Mathf.Atan2(setAmpY, setAmpX);
-        var deg = rad * (180 / Mathf.PI);
+        var angle = Random.Range(0f, 365f);
 
-        StateManager.Instance.waveAngle = (int) (90f - deg);
+        var x = Mathf.Cos(angle + 90f);
+        var y = Mathf.Sin(angle + 90f);
+
+        var norm = new Vector2(x, y).normalized;
+        
+        var ampVec = norm * Random.Range(0f, 0.65f);
+        var speedVec = norm * Random.Range(0f, 2f);
+
+        setAmpX = ampVec.x;
+        setAmpY = ampVec.y;
+        setSpeedX = speedVec.x;
+        setSpeedY = speedVec.y;
+
+        StateManager.Instance.waveAngle = (int) (angle - 90);
 
         var stormStrength = 1 - ((Mathf.Abs(setAmpX) + Mathf.Abs(setAmpY)) / 1.3f);
 
